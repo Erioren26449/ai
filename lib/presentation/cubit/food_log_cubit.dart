@@ -158,7 +158,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
       await _repository.deleteFoodItem(meal);
       await loadDailyLog();
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      emit(state.copyWith(error: 'ลบข้อมูลไม่สำเร็จ'));
     }
   }
 
@@ -167,7 +167,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
       await _repository.updateFoodItem(meal);
       await loadDailyLog();
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      emit(state.copyWith(error: 'update ข้อมูลไม่ได้กรุณ่ลองอีกครั้งภายหลัง'));
     }
   }
 
