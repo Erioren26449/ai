@@ -42,6 +42,9 @@ class _DailyTrackerState extends State<DailyTracker> {
   @override
   Widget build(BuildContext context) {
     final targetCalories = userData?.estimatedCalories?.toDouble() ?? 2000.0;
+    
+    // --- สร้างตัวแปรเช็คว่ากินเกินเป้าหรือยัง ---
+    final bool isOverLimit = widget.calories > targetCalories;
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -69,23 +72,39 @@ class _DailyTrackerState extends State<DailyTracker> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 16),
-          CircularPercentIndicator(
-            radius: 80.0,
-            lineWidth: 8.0,
-            percent: widget.calories / targetCalories,
-            center: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.local_fire_department, color: Colors.orange),
-                Text(
-                  '${widget.calories.toInt()} kcal',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+          SizedBox(height: 24), 
+
+          // --- ส่วนแสดงผลตัวเลข ---
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.local_fire_department, 
+                // ถ้าเกินเป้า ให้ไอคอนเป็นสีแดงด้วย (ถ้าอยากให้ไอคอนส้มตลอด ลบเงื่อนไขนี้ได้ครับ)
+                color: isOverLimit ? Colors.red : Colors.orange, 
+                size: 48, 
+              ),
+              SizedBox(height: 8),
+              Text(
+                '${widget.calories.toInt()}', 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40, 
+                  // --- เงื่อนไขเปลี่ยนสีตัวเลข ---
+                  color: isOverLimit ? Colors.red : Colors.black87, 
                 ),
-              ],
-            ),
-            progressColor: Colors.orange,
+              ),
+              Text(
+                'kcal consumed', 
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
+          // --- จบส่วนแสดงผลตัวเลข ---
+
           SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

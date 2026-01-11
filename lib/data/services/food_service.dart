@@ -29,11 +29,12 @@ Future<Either<String, FoodItem>> detectFoodAndCalories(File imageFile) async {
 
     final response = await Gemini.instance.textAndImage(
       text: 'Analyze this image and identify the food. '
-          'Estimate its calories, protein, carbs, and fat. '
-          'Return JSON in this format: {"name": "food name", "calories": 100, "protein": 10, "carbs": 20, "fat": 5}',
+          'Estimate its calories, protein, carbs, and fat for a standard serving size. '
+          'Return ONLY raw JSON. Do not use Markdown formatting. Do not use code blocks. Do not add any explanation. ' // <--- เพิ่มท่อนนี้
+          'JSON Format: {"name": "food name", "calories": 100, "protein": 10, "carbs": 20, "fat": 5}',
       images: [imageFile.readAsBytesSync()],
     );
-
+    
     final output = response?.output;
     if (output == null || output.isEmpty) {
       return Left('No response output from Gemini API');
