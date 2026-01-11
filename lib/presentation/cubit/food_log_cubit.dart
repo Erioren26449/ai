@@ -86,7 +86,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
       await _repository.addFoodItem(meal);
       await loadDailyLog();
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      emit(state.copyWith(error:'เพิ่มอาหารไม่สำเร็จ',successMessage: null));
     }
   }
 
@@ -125,14 +125,14 @@ class FoodLogCubit extends Cubit<FoodLogState> {
     result.fold(
       (failure) {
         // Emit error message
-        emit(state.copyWith(error: failure, successMessage: null, isLoading: false));
+        emit(state.copyWith(error: 'ไม่สามารถตรวจจับอาหารจากรูปภาพได้ กรุณาลองใหม่', successMessage: null, isLoading: false));
       },
       (meal) async {
         await addMeal(meal);
         // Emit success message
         emit(state.copyWith(
           error: null,
-          successMessage: 'Food "${meal.name}" detected successfully and added to the log.',
+          successMessage: 'เมนู"${meal.name}" ตรวจพบอาหารจากรูปภาพและบันทึกเรียบร้อยแล้ว',
           isLoading: false,
         ));
       },
